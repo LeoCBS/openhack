@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: minecraft
+spec:
+  selector:
+    app: minecraft
+  ports:
+  - name: server
+    protocol: TCP
+    port: 25565
+    targetPort: 25565
+  - name: arcon
+    protocol: TCP
+    port: 25575
+    targetPort: 25575
+  type: LoadBalancer
+  loadBalancerIP: 40.117.139.215
