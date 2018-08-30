@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: minecraft-server-py
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minecraft-server-py
+    spec:
+      containers:
+      - name: minecraft
+        image: leocbs/openhack-server
