@@ -1,0 +1,117 @@
+* { box-sizing: border-box; }
+*:before, *:after { box-sizing: border-box; }
+
+article,
+aside,
+details,
+footer,
+header,
+main,
+menu,
+nav,
+section { display: block; }
+
+[hidden] { display: none; }
+
+svg:not(:root) { overflow: hidden; }
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] { -webkit-appearance: button; }
+
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner { border-style: none; padding: 0; }
+
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring { outline: 1px dotted ButtonText; }
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  line-height: inherit; 
+}
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+button:-moz-focusring,
+input:-moz-focusring { outline: 1px dotted ButtonText; }
+
+button, select { text-transform: none; }
+
+input[type="number"] { width: auto; }
+input[type="search"] { -webkit-appearance: textfield; }
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+
+[type="checkbox"], [type="radio"] { padding: 0; }
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button { height: auto; }
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+textarea {
+  overflow: auto;
+  resize: vertical; 
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none; 
+}
+a:hover, a:active {
+  outline: none;
+  color: inherit; 
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  -webkit-appearance: button;
+  overflow: visible; 
+}
+button:hover, button:active { outline: none; }
+button[disabled] { pointer-events: none; }
+
+strong { font-weight: 700; }
+ul, ol { margin: 0; padding: 0; }
+li { list-style: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+@font-face {
+  font-family: BaronNeueBlack;
+  src: url("path/BaronNeueBlack.otf") format("opentype");
+}
+
+@font-face {
+  font-family: BaronNeueBlack;
+  font-weight: bold;
+  src: url("path/BaronNeueBold.otf") format("opentype");
+}
