@@ -4,8 +4,8 @@
 	var serverTable, serverList;
 
 	window.addEventListener("load", function init() {
-		serverTable = document.querySelector(".server-table");
-		serverList = document.querySelector(".server-list");
+		serverTable = document.querySelector("#server-table");
+		serverList = document.querySelector("#server-list");
 
 		var form = document.getElementById("newServer");
 		form.addEventListener("submit", function (event) {
