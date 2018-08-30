@@ -21,6 +21,9 @@ spec:
           name: server
         - containerPort: 25575
           name: arcon
+        volumeMounts:
+        - mountPath: "/data"
+          name: volume
       volumes:
         - name: volume
           persistentVolumeClaim:
