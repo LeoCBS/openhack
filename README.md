@@ -2,7 +2,7 @@
 This is our solution to Microsoft's OpenHack challanges
 
 ## Minecraft Server Management API
-POST /create → `empty body`
+POST /create → `empty body`  
 └── 200 OK
 ```json
 {
@@ -14,7 +14,7 @@ POST /create → `empty body`
 }
 ```
 
-GET /list
+GET /list  
 └── 200 OK
 ```json
 [
@@ -42,7 +42,7 @@ GET /list
 ]
 ```
 
-DELETE /:name
+DELETE /:name  
 └── 200 OK
 ```json
 {"message": "Server :name deleted"}
