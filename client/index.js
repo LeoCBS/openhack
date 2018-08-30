@@ -1,5 +1,6 @@
 (function () {
 	"use strict";
+	var url = "https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0/";
 	var serverTable, serverList;
 
 	window.addEventListener("load", function init() {
@@ -15,27 +16,25 @@
 		updateList();
 	});
 
+	function xhrError(event) {
+		console.error('Network error', this, event);
+	}
+
 	function requestNewServer() {
+		console.log('requestNewServer!');
 		var xhr = new XMLHttpRequest();
-		xhr.addEventListener("load", onSuccess); // Success callback
-		xhr.addEventListener("error", onError); // Error Handling
-		xhr.open("POST", "server/create");
+		xhr.addEventListener("load", updateList);
+		xhr.addEventListener("error", xhrError);
+		xhr.open("POST", url + "create");
 		xhr.send();
 	}
 
-	function onSuccess(event) {
-		updateList(); // TODO function
-	}
-
-	function onError(event) {
-		console.error('Network error', event);
-	}
-
 	function updateList() {
+		console.log('updateList!');
 		var xhr = new XMLHttpRequest();
-		xhr.addEventListener("error", onError); // Error Handling
-		xhr.addEventListener("load", success); // Success callback
-		xhr.open("GET", "https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0/list");
+		xhr.addEventListener("load", success);
+		xhr.addEventListener("error", xhrError);
+		xhr.open("GET", url + "list");
 		xhr.send();
 
 		function success() {
@@ -53,7 +52,23 @@
 
 				var rcon = row.insertCell();
 				rcon.appendChild(document.createTextNode(server.endpoints.rcon));
+
+				var del = row.insertCell();
+				var a = document.createElement('a');
+				a.innerHTML = "𝗫";
+				a.onclick = deleteServer.bind(null, server.name);
+				a.href = "javascript:void(0);";
+				del.appendChild(a);
 			});
 		}
+	}
+
+	function deleteServer(serverName) {
+		console.log('deleteServer!', serverName);
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("load", updateList);
+		xhr.addEventListener("error", xhrError);
+		xhr.open("DELETE", url + serverName);
+		xhr.send();
 	}
 })();
