@@ -1,0 +1,101 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Open Hack API
+  contact:
+    email: leocborgess@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: minecraft
+    description: manager minecraft server
+paths:
+  /create:
+    post:
+      tags:
+        - minecraft
+      summary: adds an minecraft server
+      operationId: addServer
+      responses:
+        '201':
+          description: server create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerItem'
+  /list:
+    get:
+      tags:
+        - minecraft
+      summary: list minecraft server
+      operationId: listServers
+      responses:
+        '200':
+          description: list all server
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServerItem'
+              example:
+                - name: tenant1
+                  endpoints:
+                    minecraft: "128.124.90.15:25565"
+                    rcon: "128.124.90.15:25575"
+                - name: tenant2
+                  endpoints:
+                    minecraft: "128.194.90.16:25565"
+                    rcon: "128.194.90.16:25575"
+                - name: tenant3
+                  endpoints:
+                    minecraft: "128.194.90.17:25566"
+                    rcon: "128.194.90.17:25575"
+          
+  '/{name}':
+    delete:
+      tags:
+        - minecraft
+      summary: delete one server
+      description: Returns a single pet
+      operationId: getPetById
+      parameters:
+        - name: name
+          in: path
+          description: server name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: server deleted
+components:
+  schemas:
+    ServerItem:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: tenant1
+        endpoints:
+          $ref: '#/components/schemas/Endpoints'
+    Endpoints:
+      required:
+        - minecraft
+        - rcon
+      properties:
+        minecraft:
+          type: string
+          example: "<publicly available IP:port>"
+        rcon:
+          type: string
+          example: "<publicly available IP:port>"
+      type: object
