@@ -1,21 +1,27 @@
-import yaml
+from flask import Flask
 
-from os import path
-from kubernetes import client, config
+import kube
 
-# Configs can be set in Configuration class directly or using helper utility
-print("loading kube config")
-config.load_kube_config()
+from logging.config import dictConfig
 
-v1 = client.CoreV1Api()
-print("Listing pods with their IPs:")
-ret = v1.list_pod_for_all_namespaces(watch=False)
-for i in ret.items:
-    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
-#with open(path.join(path.dirname(__file__), "minecraft-server.yaml")) as f:
-#        dep = yaml.load(f)
-#        k8s_beta = client.ExtensionsV1beta1Api()
-#        resp = k8s_beta.create_namespaced_deployment(
-#            body=dep, namespace="default")
-#        print("Deployment created. status='%s'" % str(resp.status))
+app = Flask(__name__)
+
+@app.route('/create')
+def create_minecraft_server():
+    return kube.create_minecraft_deployment(app.logger)
