@@ -37,7 +37,7 @@ def create_deployment_object(name):
         name="volume", persistent_volume_claim=client.V1PersistentVolumeClaimVolumeSource(claim_name="azure-managed-disk"))
     # Create and configurate a spec section
     template = client.V1PodTemplateSpec(
-        metadata=client.V1ObjectMeta(labels={"app": "minecraft"}),
+        metadata=client.V1ObjectMeta(labels={"app": name}),
         spec=client.V1PodSpec(containers=[container], volumes=[volumes]))
     # Create the specification of deployment
     spec = client.ExtensionsV1beta1DeploymentSpec(
@@ -91,25 +91,26 @@ def create_service(name):
     except ApiException as e:
         print("Exception when calling CoreV1Api->create_namespaced_endpoints: %s\n" % e)
 
-def get_service(name):
-    try:
-        config.load_kube_config()
-        api_instance = client.CoreV1Api()
-        resp = api_instance.read_namespaced_service(name=name, namespace='default')
-        ip = resp.status.load_balancer.ingress[0].ip
-        print("service {}".format(ip))
-        return ip
-    except:
-        print("empty IP, trying again")
-        time.sleep(5)
-        get_service(name)
+def get_service(name, logger):
+    while True:
+        try:
+            config.load_kube_config()
+            api_instance = client.CoreV1Api()
+            resp = api_instance.read_namespaced_service(name=name, namespace='default')
+            ip = resp.status.load_balancer.ingress[0].ip
+            logger.info("service ip {}".format(ip))
+            return ip
+        except:
+            logger.info("empty IP, trying again")
+            time.sleep(5)
 
 def create_minecraft_server(logger):
-	name = "minecraft-{}".format(randint(0, 9999))
-	logger.info('creating deployment')
-	create_minecraft_deployment(name)
-	logger.info('creating service')
-	create_service(name)
-	ip = get_service(name)
-	logger.info('got this server IP {}'.format(ip))
-	return ip
+    name = "minecraft-{}".format(randint(0, 9999))
+    logger.info('creating deployment')
+    create_minecraft_deployment(name)
+    logger.info('creating service')
+    create_service(name)
+    ip = get_service(name, logger)
+    logger.info('got this server IP {}'.format(ip))
+    respJson = {"name": name, "endpoints": {"minecraft": "{}:{}".format(ip, "22565"), "rcon": "{}:{}".format(ip, "22575")}}
+    return str(respJson)
