@@ -1,17 +1,22 @@
+html, body { height: 100%; }
+
 body {
   margin: 0 auto;
   padding: 0;
   font-weight: 400;
   font-family: Helvetica, Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .container {
   position: relative;
   width: 100%;
-  /*max-width: 960px;*/
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  overflow-y: scroll;
 }
 
 /* For devices larger than 400px */
@@ -60,7 +65,6 @@ a:hover, a:active {
 }
 
 footer {
-  position: absolute;
   bottom: 0;
   width: 100%;
   padding: 2em;

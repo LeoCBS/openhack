@@ -1,6 +1,7 @@
 (function () {
 	"use strict";
-	var url = "https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0/";
+	var url = "http://13.68.128.16:5000/";
+	// var url = "https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0/";
 	var serverTable, serverList, newServerBtn, loader;
 
 	window.addEventListener("load", function init() {
