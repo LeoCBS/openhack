@@ -1,11 +1,13 @@
 (function () {
 	"use strict";
 	var url = "https://virtserver.swaggerhub.com/LeoCBS/openhack/1.0.0/";
-	var serverTable, serverList;
+	var serverTable, serverList, newServerBtn, loader;
 
 	window.addEventListener("load", function init() {
 		serverTable = document.querySelector("#server-table");
 		serverList = document.querySelector("#server-list");
+		newServerBtn = document.querySelector("#new-server-btn");
+		loader = document.querySelector("#loader-wrapper");
 
 		var form = document.getElementById("newServer");
 		form.addEventListener("submit", function (event) {
@@ -22,11 +24,14 @@
 
 	function requestNewServer() {
 		console.log('requestNewServer!');
-		var xhr = new XMLHttpRequest();
-		xhr.addEventListener("load", updateList);
-		xhr.addEventListener("error", xhrError);
-		xhr.open("POST", url + "create");
-		xhr.send();
+		lockUI();
+		setTimeout(function () {
+			var xhr = new XMLHttpRequest();
+			xhr.addEventListener("load", updateList);
+			xhr.addEventListener("error", xhrError);
+			xhr.open("POST", url + "create");
+			xhr.send();
+		}, 2000);
 	}
 
 	function updateList() {
@@ -60,15 +65,31 @@
 				a.href = "javascript:void(0);";
 				del.appendChild(a);
 			});
+			unlockUI();
 		}
 	}
 
 	function deleteServer(serverName) {
 		console.log('deleteServer!', serverName);
+		lockUI();
 		var xhr = new XMLHttpRequest();
 		xhr.addEventListener("load", updateList);
 		xhr.addEventListener("error", xhrError);
 		xhr.open("DELETE", url + serverName);
 		xhr.send();
+	}
+
+	function lockUI() {
+		newServerBtn.disabled = true;
+
+		var div = document.createElement("div");
+		div.classList.add("loader");
+		loader.appendChild(div);
+	}
+
+	function unlockUI() {
+		newServerBtn.disabled = false;
+
+		// loader.innerHTML = "";
 	}
 })();
