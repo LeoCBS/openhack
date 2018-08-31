@@ -1,11 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: minecraft-0000
-  namespace: minecraft
+  name: minecraft-server-py
 spec:
   selector:
-    app: minecraft
+    app: minecraft-server-py
   ports:
   - name: server
     protocol: TCP
