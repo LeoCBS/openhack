@@ -34,6 +34,13 @@ def list_minecraft_servers():
     resp = kube.list_services(app.logger)
     return json.dumps(resp)
 
+@app.route('/<name>',methods = ['DELETE'])
+def delete_minecraft_server(name):
+    app.logger.info("received request")
+    resp = kube.delete_service(name, app.logger)
+    return json.dumps(resp)
+
 #list_minecraft_servers()
 #create_minecraft_server()
+#delete_minecraft_server("minecraft-0000")
 
