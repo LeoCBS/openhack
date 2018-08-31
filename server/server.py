@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 import json
 import kube
 
@@ -21,6 +22,7 @@ dictConfig({
 })
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/create',methods = ['POST'])
 def create_minecraft_server():
