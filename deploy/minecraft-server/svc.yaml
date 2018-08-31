@@ -16,4 +16,3 @@ spec:
     port: 25575
     targetPort: 25575
   type: LoadBalancer
-  loadBalancerIP: 40.117.139.215
