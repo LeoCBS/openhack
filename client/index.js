@@ -89,7 +89,6 @@
 
 	function unlockUI() {
 		newServerBtn.disabled = false;
-
-		// loader.innerHTML = "";
+		loader.innerHTML = "";
 	}
 })();
