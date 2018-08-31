@@ -1,3 +1,5 @@
+.PHONY: publish image run
+
 version ?= latest
 IMAGE = leocbs/openhack-server:$(version)
 
