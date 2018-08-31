@@ -8,4 +8,4 @@ image:
 	docker build -t $(IMAGE) .
 
 run: image
-	docker run --rm leocbs/openhack-server
+	docker run --rm -p 5000:5000 leocbs/openhack-server

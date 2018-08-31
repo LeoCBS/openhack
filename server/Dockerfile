@@ -1,9 +1,17 @@
 FROM python:3.6
 
-RUN pip install kubernetes
 WORKDIR /server
+
+COPY requirements.txt /server/requirements.txt
+RUN pip install -r requirements.txt
 
 COPY config /root/.kube/config
 COPY server.py /server/server.py
+COPY kube.py /server/kube.py
+COPY minecraft.yaml /server/minecraft.yaml
 
-CMD ["python","server.py"]
+ENV FLASK_APP=server.py
+
+EXPOSE 5000
+
+CMD ["flask" , "run", "--host=0.0.0.0"]
