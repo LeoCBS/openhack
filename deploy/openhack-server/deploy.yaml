@@ -13,3 +13,6 @@ spec:
       containers:
       - name: minecraft
         image: leocbs/openhack-server
+        ports:
+          - containerPort: 5000
+            name: server
