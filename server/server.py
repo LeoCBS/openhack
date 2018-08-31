@@ -22,6 +22,8 @@ dictConfig({
 
 app = Flask(__name__)
 
-@app.route('/create')
+@app.route('/create',methods = ['POST'])
 def create_minecraft_server():
-    return kube.create_minecraft_deployment(app.logger)
+    app.logger.info("received request")
+    resp = kube.create_minecraft_server(app.logger)
+    return resp

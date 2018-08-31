@@ -104,7 +104,12 @@ def get_service(name):
         time.sleep(5)
         get_service(name)
 
-name = "minecraft-{}".format(randint(0, 9999))
-create_minecraft_deployment(name)
-create_service(name)
-ip = get_service(name)
+def create_minecraft_server(logger):
+	name = "minecraft-{}".format(randint(0, 9999))
+	logger.info('creating deployment')
+	create_minecraft_deployment(name)
+	logger.info('creating service')
+	create_service(name)
+	ip = get_service(name)
+	logger.info('got this server IP {}'.format(ip))
+	return ip
