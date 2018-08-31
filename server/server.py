@@ -1,5 +1,5 @@
 from flask import Flask
-
+import json
 import kube
 
 from logging.config import dictConfig
@@ -26,4 +26,14 @@ app = Flask(__name__)
 def create_minecraft_server():
     app.logger.info("received request")
     resp = kube.create_minecraft_server(app.logger)
-    return resp
+    return json.dumps(resp)
+
+@app.route('/list',methods = ['GET'])
+def list_minecraft_servers():
+    app.logger.info("received request")
+    resp = kube.list_services(app.logger)
+    return json.dumps(resp)
+
+#list_minecraft_servers()
+#create_minecraft_server()
+

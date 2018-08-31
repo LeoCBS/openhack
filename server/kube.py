@@ -16,13 +16,15 @@ from kubernetes.client.rest import ApiException
 #for i in ret.items:
 #    print("%s\t%s\t%s" % (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
 
+NAMESPACE = "minecraft"
+
 def create_minecraft_deployment(name):
     deployment = create_deployment_object(name)
     config.load_kube_config()
     api_instance = client.ExtensionsV1beta1Api()
     api_response = api_instance.create_namespaced_deployment(
         body=deployment,
-        namespace="default")
+        namespace=NAMESPACE)
     print("Deployment created. status='%s'" % str(api_response.status))
 
 def create_deployment_object(name):
@@ -55,7 +57,6 @@ def create_deployment_object(name):
 def create_service(name):
     config.load_kube_config()
     api_instance = client.CoreV1Api()
-    namespace = 'default'
 
     manifest = {
         "kind": "Service",
@@ -86,7 +87,7 @@ def create_service(name):
     }
 
     try:
-        api_response = api_instance.create_namespaced_service(namespace, manifest, pretty=True)
+        api_response = api_instance.create_namespaced_service(NAMESPACE, manifest, pretty=True)
         print(api_response)
     except ApiException as e:
         print("Exception when calling CoreV1Api->create_namespaced_endpoints: %s\n" % e)
@@ -96,13 +97,30 @@ def get_service(name, logger):
         try:
             config.load_kube_config()
             api_instance = client.CoreV1Api()
-            resp = api_instance.read_namespaced_service(name=name, namespace='default')
+            resp = api_instance.read_namespaced_service(name=name, namespace=NAMESPACE)
             ip = resp.status.load_balancer.ingress[0].ip
             logger.info("service ip {}".format(ip))
             return ip
         except:
             logger.info("empty IP, trying again")
             time.sleep(5)
+
+def list_services(logger):
+    config.load_kube_config()
+    api_instance = client.CoreV1Api()
+    services = api_instance.list_namespaced_service(namespace=NAMESPACE, watch=False)
+    servers = []
+    for svc in services.items:
+        ip = "<pending>"
+        if svc.status.load_balancer.ingress is not None:
+            ip = svc.status.load_balancer.ingress[0].ip
+        serv = get_server_json(svc.metadata.name, ip)
+        servers.append(serv)
+    logger.info("servers {}".format(servers))
+    return servers
+
+def get_server_json(name, ip):
+    return {"name": name, "endpoints": {"minecraft": "{}:{}".format(ip, "22565"), "rcon": "{}:{}".format(ip, "22575")}}
 
 def create_minecraft_server(logger):
     name = "minecraft-{}".format(randint(0, 9999))
@@ -113,4 +131,4 @@ def create_minecraft_server(logger):
     ip = get_service(name, logger)
     logger.info('got this server IP {}'.format(ip))
     respJson = {"name": name, "endpoints": {"minecraft": "{}:{}".format(ip, "22565"), "rcon": "{}:{}".format(ip, "22575")}}
-    return str(respJson)
+    return respJson
