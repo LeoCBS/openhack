@@ -37,7 +37,7 @@ def create_deployment_object(name):
         name="volume", persistent_volume_claim=client.V1PersistentVolumeClaimVolumeSource(claim_name="azure-managed-disk"))
     # Create and configurate a spec section
     template = client.V1PodTemplateSpec(
-        metadata=client.V1ObjectMeta(labels={"app": "minecraft"}),
+        metadata=client.V1ObjectMeta(labels={"app": name}),
         spec=client.V1PodSpec(containers=[container], volumes=[volumes]))
     # Create the specification of deployment
     spec = client.ExtensionsV1beta1DeploymentSpec(
